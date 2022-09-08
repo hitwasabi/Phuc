@@ -26,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
         lvSong = findViewById(R.id.lvSong);
         songList = new ArrayList<>();
-        songList.add(new Song("Quốc Ca",0));
-        songList.add(new Song("Bạc Phận",1));
-        songList.add(new Song("Một bước yêu vạn dặm đau",2));
+        songList.add(new Song("Quốc Ca",0,"Văn Cao"));
+        songList.add(new Song("Bạc Phận",1,"Jack 5 củ"));
+        songList.add(new Song("Một bước yêu vạn dặm đau",2,"MR.Siro"));
+        songList.add(new Song("Happy Birth Day",3,"Bé Louise"));
+        songList.add(new Song("Em yêu trường em",4,"Bé Trang Thư"));
+        songList.add(new Song("Bạn Cấp 3",5,"Lou Hoàng"));
 
         //Adapter
         songAdapter = new SongAdapter(this,songList);

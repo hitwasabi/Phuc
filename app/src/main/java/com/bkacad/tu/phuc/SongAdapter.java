@@ -43,11 +43,11 @@ public class SongAdapter extends BaseAdapter {
         //bind id cho item view
 
         TextView Title = view.findViewById(R.id.item_song_name);
-
+        TextView Author = view.findViewById(R.id.item_song_author);
         //Do du lieu vao view
         Song song = songList.get(i);
         Title.setText(song.getTitle());
-
+        Author.setText(song.getAuthor());
         return view;
     }
 }

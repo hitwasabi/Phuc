@@ -2,31 +2,36 @@ package com.bkacad.tu.phuc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.media.MediaParser;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 public class SongActivity extends AppCompatActivity {
     TextView Title, numLeft, numRight;
-    //sdfsdf
     SeekBar seekBar;
     ImageButton btnBack, btnPlay, btnNext;
     //    khai báo arrList như này mới ko bị báo lỗi rỗng khi thực hiện các thao tác ở dưới
-    private ArrayList<Song> arraySong = new ArrayList<>();
+    protected ArrayList<Song> arraySong = new ArrayList<>();
     int position, uri ;
     MediaPlayer mediaPlayer;
 
+    private void InitUI() {
+        numLeft = (TextView) findViewById(R.id.numleft);
+        numRight = (TextView) findViewById(R.id.numRight);
+        Title = (TextView) findViewById(R.id.Title);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        btnNext = (ImageButton) findViewById(R.id.btnNext);
+        btnBack = (ImageButton) findViewById(R.id.btnBack);
+        btnPlay = (ImageButton) findViewById(R.id.btnPlay);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +44,11 @@ public class SongActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-        Bundle bundle=i.getExtras();
-        position= (int)bundle.getInt("position",0);
+        Bundle bundle = i.getExtras();
+        position= bundle.getInt("position",0);
 //        đổi lại uri tương ứng với kiểu dữ liệu int của thuộc tính File
         uri= arraySong.get(position).getFile();
+
         if(mediaPlayer!=null)
         {
             mediaPlayer.stop();
@@ -174,20 +180,14 @@ public class SongActivity extends AppCompatActivity {
 
     private void AddSong () {
 //        không khởi tạo mới arraySong nữa vì trên có rồi
-        arraySong.add(new Song("Quốc Ca", R.raw.quocca));
-        arraySong.add(new Song("Bạc Phận", R.raw.bacphan));
-        arraySong.add(new Song("Một bước yêu vạn dặm đau", R.raw.mbyvdd));
+        arraySong.add(new Song("Quốc Ca", R.raw.quocca,"Văn Cao"));
+        arraySong.add(new Song("Bạc Phận", R.raw.bacphan,"Jack 5 củ"));
+        arraySong.add(new Song("Một bước yêu vạn dặm đau", R.raw.mbyvdd,"MR.Siro"));
+        arraySong.add(new Song("Happy Birth Day",R.raw.hpbd,"Bé Louise"));
+        arraySong.add(new Song("Em yêu trường em",R.raw.eyte,"Bé Trang Thư"));
+        arraySong.add(new Song("Bạn Cấp 3",R.raw.bc3,"Lou Hoàng"));
     }
 
 
-    private void InitUI() {
-        numLeft = (TextView) findViewById(R.id.numleft);
-        numRight = (TextView) findViewById(R.id.numRight);
-        Title = (TextView) findViewById(R.id.Title);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-        btnNext = (ImageButton) findViewById(R.id.btnNext);
-        btnBack = (ImageButton) findViewById(R.id.btnBack);
-        btnPlay = (ImageButton) findViewById(R.id.btnPlay);
-    }
 }
 
