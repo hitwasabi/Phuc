@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 public class SongActivity extends AppCompatActivity {
     TextView Title, numLeft, numRight;
+    //sdfsdf
     SeekBar seekBar;
     ImageButton btnBack, btnPlay, btnNext;
     //    khai báo arrList như này mới ko bị báo lỗi rỗng khi thực hiện các thao tác ở dưới
