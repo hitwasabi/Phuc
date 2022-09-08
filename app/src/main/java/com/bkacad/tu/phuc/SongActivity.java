@@ -2,6 +2,7 @@ package com.bkacad.tu.phuc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaParser;
 import android.media.MediaPlayer;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,8 +21,9 @@ public class SongActivity extends AppCompatActivity {
     TextView Title, numLeft, numRight;
     SeekBar seekBar;
     ImageButton btnBack, btnPlay, btnNext;
-    ArrayList<Song> arraySong;
-    int position ;
+    //    khai báo arrList như này mới ko bị báo lỗi rỗng khi thực hiện các thao tác ở dưới
+    private ArrayList<Song> arraySong = new ArrayList<>();
+    int position, uri ;
     MediaPlayer mediaPlayer;
 
 
@@ -30,21 +33,23 @@ public class SongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_song);
 
         InitUI();
+//        lỗi hàm addsong đã sửa cmt ở dưới
         AddSong();
 
 
         Intent i = getIntent();
         Bundle bundle=i.getExtras();
         position= (int)bundle.getInt("position",0);
-        Uri uri= Uri.parse(arraySong.get(position).toString());
+//        đổi lại uri tương ứng với kiểu dữ liệu int của thuộc tính File
+        uri= arraySong.get(position).getFile();
         if(mediaPlayer!=null)
         {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
 
-
-        mediaPlayer = MediaPlayer.create(SongActivity.this, uri);
+//        chọn lại đúng hàm create với kiểu tham số int không dùng tham số uri
+        mediaPlayer = MediaPlayer.create(SongActivity.this,uri);
         Title.setText(arraySong.get(position).getTitle());
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +59,15 @@ public class SongActivity extends AppCompatActivity {
                 if(position > arraySong.size() - 1){
                     position = 0;
                 }
+//                giống nút back
+                if(mediaPlayer.isPlaying()){
+                    btnPlay.setImageResource(R.drawable.play);
+                    mediaPlayer.pause();
 
+                }
+                Title.setText(arraySong.get(position).getTitle());
+                uri= arraySong.get(position).getFile();
+                mediaPlayer = MediaPlayer.create(SongActivity.this,uri);
                 mediaPlayer.start();
                 btnPlay.setImageResource(R.drawable.stop);
                 SetTime();
@@ -69,9 +82,17 @@ public class SongActivity extends AppCompatActivity {
                 if(position < 0){
                     position = arraySong.size() - 1;
                 }
+//                kiểm tra xem có đang tồn tại mediaPlayer không
                 if(mediaPlayer.isPlaying()){
-                    mediaPlayer.stop();
+                    btnPlay.setImageResource(R.drawable.play);
+                    mediaPlayer.pause();
+
                 }
+//                đặt lại text
+                Title.setText(arraySong.get(position).getTitle());
+//                gán lại uri và mediaPlayer như ở phần cmt đầu tiên
+                uri= arraySong.get(position).getFile();
+                mediaPlayer = MediaPlayer.create(SongActivity.this,uri);
 
                 mediaPlayer.start();
                 btnPlay.setImageResource(R.drawable.stop);
@@ -151,7 +172,7 @@ public class SongActivity extends AppCompatActivity {
     }
 
     private void AddSong () {
-        arraySong = new ArrayList<>();
+//        không khởi tạo mới arraySong nữa vì trên có rồi
         arraySong.add(new Song("Quốc Ca", R.raw.quocca));
         arraySong.add(new Song("Bạc Phận", R.raw.bacphan));
         arraySong.add(new Song("Một bước yêu vạn dặm đau", R.raw.mbyvdd));
