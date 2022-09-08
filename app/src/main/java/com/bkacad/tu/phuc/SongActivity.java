@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.MediaParser;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -19,8 +20,9 @@ public class SongActivity extends AppCompatActivity {
     SeekBar seekBar;
     ImageButton btnBack, btnPlay, btnNext;
     ArrayList<Song> arraySong;
-    int position = 1;
+    int position ;
     MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,21 @@ public class SongActivity extends AppCompatActivity {
 
         InitUI();
         AddSong();
-        KhoiTaoMediaPlayer();
-
-        Intent j = getIntent();
 
 
+        Intent i = getIntent();
+        Bundle bundle=i.getExtras();
+        position= (int)bundle.getInt("position",0);
+        Uri uri= Uri.parse(arraySong.get(position).toString());
+        if(mediaPlayer!=null)
+        {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+
+
+        mediaPlayer = MediaPlayer.create(SongActivity.this, uri);
+        Title.setText(arraySong.get(position).getTitle());
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +54,7 @@ public class SongActivity extends AppCompatActivity {
                 if(position > arraySong.size() - 1){
                     position = 0;
                 }
-                KhoiTaoMediaPlayer();
+
                 mediaPlayer.start();
                 btnPlay.setImageResource(R.drawable.stop);
                 SetTime();
@@ -60,7 +72,7 @@ public class SongActivity extends AppCompatActivity {
                 if(mediaPlayer.isPlaying()){
                     mediaPlayer.stop();
                 }
-                KhoiTaoMediaPlayer();
+
                 mediaPlayer.start();
                 btnPlay.setImageResource(R.drawable.stop);
                 SetTime();
@@ -72,11 +84,13 @@ public class SongActivity extends AppCompatActivity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if(mediaPlayer.isPlaying()){
-                    mediaPlayer.pause();
                     btnPlay.setImageResource(R.drawable.play);
+                    mediaPlayer.pause();
+
                 } else{
-                    mediaPlayer.start();
                     btnPlay.setImageResource(R.drawable.stop);
+                    mediaPlayer.start();
+
                 }
                 SetTime();
                 UpdateTime();
@@ -101,10 +115,7 @@ public class SongActivity extends AppCompatActivity {
         });
     }
 
-    private void KhoiTaoMediaPlayer(){
-        mediaPlayer = MediaPlayer.create(SongActivity.this, arraySong.get(position).getFile());
-        Title.setText(arraySong.get(position).getTitle());
-    }
+
 
     private void UpdateTime(){
         Handler handler = new Handler();
@@ -121,7 +132,7 @@ public class SongActivity extends AppCompatActivity {
                         if(position > arraySong.size() - 1){
                             position = 0;
                         }
-                        KhoiTaoMediaPlayer();
+
                         mediaPlayer.start();
                         btnPlay.setImageResource(R.drawable.stop);
                         SetTime();
@@ -143,6 +154,7 @@ public class SongActivity extends AppCompatActivity {
         arraySong = new ArrayList<>();
         arraySong.add(new Song("Quốc Ca", R.raw.quocca));
         arraySong.add(new Song("Bạc Phận", R.raw.bacphan));
+        arraySong.add(new Song("Một bước yêu vạn dặm đau", R.raw.mbyvdd));
     }
 
 

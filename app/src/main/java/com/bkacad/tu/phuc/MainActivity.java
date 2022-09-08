@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
         lvSong = findViewById(R.id.lvSong);
         songList = new ArrayList<>();
-        songList.add(new Song("Quốc Ca",1));
-        songList.add(new Song("Bạc Phận",2));
+        songList.add(new Song("Quốc Ca",0));
+        songList.add(new Song("Bạc Phận",1));
+        songList.add(new Song("Một bước yêu vạn dặm đau",2));
+
         //Adapter
         songAdapter = new SongAdapter(this,songList);
         //Set Adapter cho listview
@@ -38,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Intent j = new Intent(MainActivity.this,SongActivity.class);
-                j.putExtra("music",i);
+                j.putExtra("position", i);
+
                 //Start Activity
                 startActivity(j);
 
